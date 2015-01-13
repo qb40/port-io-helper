@@ -1,3 +1,4 @@
+'function declarations
 DECLARE SUB word (s AS STRING, x AS INTEGER, y AS INTEGER, t1 AS INTEGER, p1 AS INTEGER, c AS INTEGER, p AS INTEGER, f AS INTEGER, t AS DOUBLE)
 DECLARE FUNCTION mainmenu% (h$, hc%, u%, os%, oc%, bx1%, by1%, bx2%, by2%, bc%, bt%)
 DECLARE SUB rub (x1 AS INTEGER, y1 AS INTEGER, x2 AS INTEGER, y2 AS INTEGER)
@@ -16,8 +17,11 @@ DECLARE SUB char (s AS STRING, x AS INTEGER, y AS INTEGER, t AS INTEGER, pp AS I
 DECLARE SUB portout (s AS STRING, p AS LONG)
 DECLARE FUNCTION randnum (a1 AS INTEGER, a2 AS INTEGER)
 DECLARE FUNCTION portin$ (l AS INTEGER, p AS LONG)
+
+'config
 REM $STATIC
 DEFLNG I, P
+
 '============================Declaring Keys==================================
 CONST backspc = 8, enter = 13, htab = 9
 CONST left = 75, right = 77, up = 72, down = 80
@@ -25,24 +29,37 @@ CONST uplt = 71, uprt = 73, dnlt = 79, dnrt = 81
 CONST insert = 82, home = 71, pageup = 73, del = 83, endk = 79, pagedn = 81
 CONST kf1 = 59, kf2 = 60, kf3 = 61, kf4 = 62, kf5 = 63, kf6 = 64, kf7 = 65, kf8 = 66, kf9 = 67, kf10 = 68, kf11 = 133, kf12 = 134
 '-----------------------------Keys declared---------------------------------
-a2: CLS
-COLOR 14
-PRINT "Your port Manager"
+
+start:
+CLS
 COLOR 15
-PRINT "================="
-PRINT ""
-PRINT ""
-COLOR 1
-PRINT "1 - Send data to a port"
-PRINT "2 - Read data from a port"
-PRINT "3 - Try finding input ports"
-a1: k$ = INPUT$(1)
-IF k$ = CHR$(27) THEN SYSTEM
-IF k$ = "1" THEN GOTO z1
-IF k$ = "2" THEN GOTO z2
-IF k$ = "3" THEN GOTO z3
+PRINT "Port IO Helper"
+COLOR 7
+PRINT "--------------"
+PRINT
+COLOR 14
+PRINT "f - Find input ports"
+PRINT "r - Read from port"
+PRINT "w - Write to port"
+COLOR 7
+
+'handle input
+a1:
+k$ = LCASE$(INPUT$(1))
+SELECT CASE k$
+CASE CHR$(27)
+SYSTEM
+CASE "f"
+GOTO findport
+CASE "r"
+GOTO readport
+CASE ELSE
+GOTO writeport
+END SELECT
 GOTO a1
-z1: CLS
+
+writeport:
+CLS
 INPUT "Port number -->", p
 INPUT "Text to be sent : ", t$
 INPUT "Number of times to be sent : ", it
@@ -51,21 +68,19 @@ portout t$, p
 NEXT
 PRINT "Data sent."
 INPUT "Continue(Y/N)-->", z$
-IF LCASE$(z$) = "n" THEN GOTO a2 ELSE GOTO z1
+IF LCASE$(z$) = "n" THEN GOTO start ELSE GOTO writeport
 
-z2: CLS
+readport: CLS
 INPUT "Port number -->", p
 INPUT "Length of text to input : ", t%
 z$ = portin$(t%, p)
 PRINT "Data read."
 PRINT "Data recieved : "; z$
 INPUT "Continue(Y/N)-->", z$
-IF LCASE$(z$) = "n" THEN GOTO a2 ELSE GOTO z2
+IF LCASE$(z$) = "n" THEN GOTO start ELSE GOTO readport
 
-z3: DIM sp(1000)
+findport: DIM sp(1000)
 CLS
-'INPUT "Sceen mode"; sc
-'SCREEN sc
 INPUT "Port start -->", ip
 INPUT "Port end -->", ep
 IF ip < 0 THEN ip = 0
@@ -74,7 +89,7 @@ COLOR 14
 LOCATE 22, 1
 diff = ep - ip
 FOR i = ip TO ep
-LOCATE 3, 20
+LOCATE 3, 1
 PRINT "Port :"; i; "            "
 IF sc <> 0 THEN LINE (0, 200)-(((i - ip) / diff) * 320, 200), 13
 DIM port(301)
@@ -83,8 +98,7 @@ k$ = INKEY$
 IF k$ = CHR$(9) THEN GOTO b
 port(dj%) = INP(i)
 NEXT
-b: LOCATE 4, 20
-PRINT "Checking port :"; i; "    "
+b: LOCATE 4, 1
 asd = port(0)
 FOR jd = 1 TO 300
 IF port(jd) <> asd THEN asd = 1
@@ -98,17 +112,15 @@ NEXT
 CLS
 PRINT ctr; "input port(s) found"
 IF ctr > 0 THEN
-PRINT "Input ports :";
+PRINT " Input ports :";
 FOR x = 1 TO UBOUND(sp)
 IF sp(x) <> 0 THEN PRINT sp(x); ",";
 NEXT
 END IF
-DO UNTIL k$ = CHR$(27)
 k$ = INPUT$(1)
-LOOP
 ERASE port, sp
 ctr = 0
-GOTO a2
+GOTO start
 END
 DEFSNG I, P
 
