@@ -28,23 +28,23 @@ Scanned input ports (not perfect).
 
 
 <img src="/assets/img/4.png" width="70%"><br/>
-Scanned input ports (not perfect).
-<br/><br/>
-
-
-<img src="/assets/img/5.png" width="70%"><br/>
 Press `r` to read from port.
 <br/><br/>
 
 
-<img src="/assets/img/6.png" width="70%"><br/>
+<img src="/assets/img/5.png" width="70%"><br/>
 `Port number` to read (`96` is keyboard port).<br/>
 `Length of text to input` is the number of reads to make.
 <br/><br/>
 
 
-<img src="/assets/img/7.png" width="70%"><br/>
+<img src="/assets/img/6.png" width="70%"><br/>
 Key `w` was pressed and released (effect can be seen).
+<br/><br/>
+
+
+<img src="/assets/img/7.png" width="70%"><br/>
+Press `w` to write to port.
 <br/><br/>
 
 
