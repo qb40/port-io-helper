@@ -1,8 +1,7 @@
 **portiohelper** is a tool for helping find and verify io ports in dos.
 Could be used just after having learnt a bit about on port io.
 
-
-## demo
+<br>
 
 <img src="https://raw.githubusercontent.com/qb40/portiohelper/gh-pages/0/image/0.png" width="70%"><br/>
 Start `port-io.exe`.<br/>
